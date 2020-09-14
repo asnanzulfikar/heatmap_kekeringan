@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>heatmap kekeringan</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+   <style type="text/css">
+   	#mapid { height: 600px;}
+   </style>
+</head>
+<body>
+	<div id="mapid"></div>
+  <script src="heatmap.min.js"></script>
+  <script src="leaflet-heatmap.js"></script>
+	<script type="text/javascript">
+
+    var testData = {
+          max: 8,
+          data: [{lat:-7.97460004,lng:110.93000000,count:0.96},
+          {lat:-7.44745004,lng:110.79791667,count:0.02},
+          {lat:-7.72766671,lng:110.60441667,count:-1.09},
+          {lat:-7.56685004,lng:110.64086667,count:0.12},
+          {lat:-7.56070004,lng:110.77000000,count:-0.99},
+          {lat:-7.95118337,lng:110.81900000,count:-0.67},
+          {lat:-7.84575004,lng:111.25320000,count:0.26},
+          {lat:-7.99278337,lng:110.83156667,count:-1.39},//song putri
+          {lat:-7.72243724,lng:111.12256907,count:-0.05},//tawangmangu
+          {lat:-8.04153337,lng:110.89768333,count:0.23},//waduk nawangan
+          {lat:-7.72957349,lng:111.25235277,count:-3.08},//waduk gonggang
+          {lat:-7.62240004,lng:111.48000000,count:-0.01},//jiwan
+          {lat:-7.99936121,lng:111.19044450,count:-0.19},//nawangan
+          {lat:-7.40791671,lng:111.45693333,count:0.12},//ngawi
+          {lat:-7.51313837,lng:111.45688880,count:-0.1},//ngrambe
+          {lat:-8.19872171,lng:111.10369450,count:1.09},//pacitan
+          {lat:-7.92108744,lng:111.45845140,count:-1.09},//slahung
+          {lat:-7.91875110,lng:111.64614371,count:-0.07},//sooko
+          {lat:-7.79016413,lng:111.62887344,count:-0.47},//telaga ngebel
+          {lat:-7.44878638,lng:111.73192223,count:-0.12},//waduk notopuro
+          {lat:-7.17130004,lng:111.89800000,count:0.37},//bojonegoro
+          {lat:-7.18364152,lng:111.28988909,count:-1.1},//doplang
+          {lat:-7.02440004,lng:112.46700000,count:0.4},//karangbinangun
+          {lat:-7.12058337,lng:112.41751667,count:0.28},//lamongan
+          {lat:-6.96750003,lng:111.79230000,count:0.08},//nglirip
+          {lat:-7.33593337,lng:112.07731667,count:0.74},//sembung kidul
+          {lat:-7.20108337,lng:112.27183333,count:0.63},//waduk gondang
+          ]
+    };
+
+    var baseLayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+    });
+
+		var cfg = {
+          // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+          "radius": 0.1,
+          "maxOpacity": .8,
+          // scales the radius based on map zoom
+          "scaleRadius": true,
+          // if set to false the heatmap uses the global maximum for colorization
+          // if activated: uses the data maximum within the current map boundaries
+          //   (there will always be a red spot with useLocalExtremas true)
+          "useLocalExtrema": true,
+          // which field name in your data represents the latitude - default "lat"
+          latField: 'lat',
+          // which field name in your data represents the longitude - default "lng"
+          lngField: 'lng',
+          // which field name in your data represents the data value - default "value"
+          valueField: 'count'
+        };
+
+
+        var heatmapLayer = new HeatmapOverlay(cfg);
+
+        var map = new L.Map('mapid', {
+          center: new L.LatLng(-7.49592,111.568909),
+          zoom: 9,
+          layers: [baseLayer, heatmapLayer]
+        });
+
+        heatmapLayer.setData(testData);
+
+	</script>
+</body>
+</html>
